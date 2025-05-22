@@ -1,0 +1,18 @@
+# 示例：.github/workflows/block-user-pr.yml
+name: Block Specific User PR
+on: [pull_request]
+
+jobs:
+  check-user:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check PR Author
+        env:
+          BLOCKED_USERS: "user1,user2,user3"  # 禁止提交 PR 的用户名列表
+        run: |
+          PR_AUTHOR="${{ github.event.pull_request.user.login }}"
+          if [[ "$BLOCKED_USERS" == *"$PR_AUTHOR"* ]]; then
+            echo "Blocked user detected: $PR_AUTHOR"
+            gh pr close ${{ github.event.pull_request.number }} --repo ${{ github.repository }}
+            exit 1
+          fi

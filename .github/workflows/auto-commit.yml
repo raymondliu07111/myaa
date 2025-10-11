@@ -1,0 +1,19 @@
+name: Keep Active
+on:
+  schedule:
+    - cron: '0 9 * * *' # 每天早上9点
+  workflow_dispatch:
+jobs:
+  commit:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+      - name: Update timestamp
+        run: |
+          date > last_active.txt
+          git config user.name "CodeNinjaEvan"
+          git config user.email "CodeNinjaEvan@email.com"
+          git add .
+          git commit -m "chore: auto keep active $(date)"
+          git push

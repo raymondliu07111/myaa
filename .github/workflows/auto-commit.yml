@@ -1,7 +1,7 @@
 name: Keep Active
 on:
   schedule:
-    - cron: '0 * * * *' # 每天早上9点
+    - cron: '0 */4 * * *'
   workflow_dispatch:
 jobs:
   commit:
